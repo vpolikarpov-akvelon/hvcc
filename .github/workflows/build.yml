@@ -14,6 +14,9 @@ jobs:
     container: ${{ matrix.os }}
 
     steps:
+      - run: |
+          curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash
+          sudo apt-get -yq install git-lfs
       - uses: actions/checkout@v3
         with:
           lfs: true
