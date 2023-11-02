@@ -7,11 +7,12 @@ on:
 
 jobs:
   build:
-
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ['3.7', '3.8', '3.9', '3.10', '3.11']
+        python-version: ['3.9']
+        os: ['ubuntu:20.04', 'ubuntu:22.04']
+    container: ${{ matrix.os }}
 
     steps:
       - uses: actions/checkout@v3
@@ -30,19 +31,3 @@ jobs:
           pip install tox tox-gh-actions
       - name: Run tox
         run: tox
-
-  dispatch:
-    needs: build
-    strategy:
-      matrix:
-        repo: ['Wasted-Audio/hvcc-examples-dpf', 'Wasted-Audio/hvcc-examples-js']
-    runs-on: ubuntu-latest
-    steps:
-      - name: Repository Dispatch
-        uses: peter-evans/repository-dispatch@v2
-        with:
-          token: ${{ secrets.HVCC_REPOSITORY_DISPATCH_TOKEN }}
-          repository: ${{ matrix.repo }}
-          event-type: nightly
-          client-payload: '{"nightly": true, "branch": "develop"}'
-        if: ${{ github.ref == 'refs/heads/develop' }}
