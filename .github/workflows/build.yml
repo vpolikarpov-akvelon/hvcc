@@ -22,10 +22,11 @@ jobs:
           lfs: true
           submodules: true
       - name: Initialize lfs
-        run: git lfs pull
+        run: cd /__w/hvcc/hvcc/ && git lfs pull
       - name: Install dependencies
         run: |
+          cd /__w/hvcc/hvcc/
           python -m pip install --upgrade pip
           pip install tox tox-gh-actions
       - name: Run tox
-        run: tox
+        run: cd /__w/hvcc/hvcc/ && tox
